@@ -283,9 +283,11 @@ body {
   border-radius: 30px;
 }
 /* 点亮蜡烛的提示框 */
-.candle-tip {
+.memorial-stage .candle-hint {
+  width: 100%;
+  text-align: center;
   font-size: 14px;
   color: #888;
-  text-align: center;
-  margin: 30px auto 0 auto;
+  padding-top: 28px;
+  margin: 0 auto;
 }
