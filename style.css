@@ -282,3 +282,14 @@ body {
   border: none;
   border-radius: 30px;
 }
+/* 点亮蜡烛的提示框 */
+.tip-text {
+  font-size: 13px;
+  color: #999;
+  text-align: center;
+  margin: 0 auto 16px auto;
+  padding: 0 10px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
