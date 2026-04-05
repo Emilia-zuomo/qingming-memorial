@@ -43,7 +43,7 @@
 
   <!-- 寄语区域 -->
   <div class="message-section">
-    <input class="nick-input" id="nickName" placeholder="请输入你的名字（必填）">
+    <input class="nick-input" id="nickName" placeholder="请输入你的名字">
     <textarea class="message-input" id="msgInput" placeholder="写下思念与寄语..."></textarea>
     <button class="send-btn" onclick="sendMessage()">发送寄语</button>
     <div class="message-wall" id="msgWall"></div>
@@ -77,7 +77,7 @@ function changeQuote() {
 }
 setInterval(changeQuote, 4000);
 
-// 雨滴（完全不规则）
+// 细雨
 function makeRain() {
   const wrap = document.getElementById("rain");
   for (let i = 0; i < 70; i++) {
@@ -90,7 +90,7 @@ function makeRain() {
   }
 }
 
-// 花瓣（完全不规则）
+// 花瓣
 function makePetals() {
   const wrap = document.getElementById("petalWrap");
   for (let i = 0; i < 45; i++) {
@@ -127,7 +127,7 @@ function sendFlower() {
   addBarrage(`${name} 敬献鲜花`);
 }
 
-// 寄语本地存储（恢复正常）
+// 寄语本地存储
 const DB_KEY = "MEMORY_MSGS";
 function sendMessage() {
   const name = document.getElementById("nickName").value.trim();
