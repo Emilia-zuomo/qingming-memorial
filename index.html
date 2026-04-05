@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云端思源 · 清明共祭</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="rain" id="rain"></div>
+<div class="petal-container" id="petalWrap"></div>
+<div class="barrage-box" id="barrageBox"></div>
+
+<div class="container">
+  <h1 class="title">云端思源</h1>
+  <p class="subtitle">缅怀先人 · 致敬英烈 · 文明祭扫</p>
+
+  <div class="memorial-stage">
+    <div class="candle-group">
+      <div class="candle" onclick="toggleCandle(this)">
+        <div class="candle-body"></div>
+        <div class="candle-wick"></div>
+        <div class="flame"></div>
+      </div>
+      <div class="candle" onclick="toggleCandle(this)">
+        <div class="candle-body"></div>
+        <div class="candle-wick"></div>
+        <div class="flame"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btns">
+    <button class="btn primary" onclick="sendFlower()">指尖献花</button>
+    <button class="btn" onclick="showShare()">分享亲友</button>
+  </div>
+
+  <!-- 烈士语录轮播 -->
+  <div class="quote-carousel">
+    <div class="quote-item" id="quoteText"></div>
+  </div>
+
+  <!-- 寄语区域 -->
+  <div class="message-section">
+    <input class="nick-input" id="nickName" placeholder="请输入你的名字（必填）">
+    <textarea class="message-input" id="msgInput" placeholder="写下思念与寄语..."></textarea>
+    <button class="send-btn" onclick="sendMessage()">发送寄语</button>
+    <div class="message-wall" id="msgWall"></div>
+  </div>
+</div>
+
+<!-- 分享弹窗 -->
+<div class="share-modal" id="shareModal" onclick="closeShare(event)">
+  <div class="share-box">
+    <div>分享云端纪念堂</div>
+    <div class="link-box" id="shareLink"></div>
+    <button class="copy-btn" onclick="copyLink()">复制链接</button>
+  </div>
+</div>
+
+<script>
+// 烈士语录轮播
+const quotes = [
+  "为有牺牲多壮志，敢教日月换新天。",
+  "人民英雄，永垂不朽。",
+  "生的伟大，死的光荣。",
+  "崇尚英雄才会产生英雄，争做英雄才能英雄辈出。",
+  "英烈以血肉之躯，护我山河无恙。",
+  "缅怀先烈，致敬英雄，吾辈自强。",
+  "一寸山河一寸血，一抔热土一抔魂。"
+];
+let quoteIndex = 0;
+function changeQuote() {
+  quoteIndex = (quoteIndex + 1) % quotes.length;
+  document.getElementById("quoteText").innerText = quotes[quoteIndex];
+}
+setInterval(changeQuote, 4000);
+
+// 雨滴（完全不规则）
+function makeRain() {
+  const wrap = document.getElementById("rain");
+  for (let i = 0; i < 70; i++) {
+    const d = document.createElement("div");
+    d.className = "rain-drop";
+    d.style.left = Math.random() * 100 + "vw";
+    d.style.top = Math.random() * 100 + "vh";
+    d.style.animationDuration = (Math.random() * 1 + 1.5) + "s";
+    wrap.appendChild(d);
+  }
+}
+
+// 花瓣（完全不规则）
+function makePetals() {
+  const wrap = document.getElementById("petalWrap");
+  for (let i = 0; i < 45; i++) {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.top = Math.random() * 100 + "vh";
+    p.style.animationDuration = (Math.random() * 4 + 4) + "s";
+    wrap.appendChild(p);
+  }
+}
+
+// 蜡烛
+function toggleCandle(el) {
+  const f = el.querySelector(".flame");
+  f.style.display = f.style.display === "block" ? "none" : "block";
+}
+
+// 弹幕
+function addBarrage(text) {
+  const box = document.getElementById("barrageBox");
+  const item = document.createElement("div");
+  item.className = "barrage-item";
+  item.innerText = text;
+  item.style.top = Math.random() * 40 + "px";
+  box.appendChild(item);
+  setTimeout(() => item.remove(), 8000);
+}
+
+// 献花
+function sendFlower() {
+  const name = document.getElementById("nickName").value.trim();
+  if (!name) { alert("请填写名字"); return; }
+  addBarrage(`${name} 敬献鲜花`);
+}
+
+// 寄语本地存储（恢复正常）
+const DB_KEY = "MEMORY_MSGS";
+function sendMessage() {
+  const name = document.getElementById("nickName").value.trim();
+  const text = document.getElementById("msgInput").value.trim();
+  if (!name || !text) { alert("请填写完整信息"); return; }
+
+  const time = new Date().toLocaleString();
+  const msg = { name, time, text };
+
+  let list = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+  list.unshift(msg);
+  if (list.length > 200) list = list.slice(0, 200);
+  localStorage.setItem(DB_KEY, JSON.stringify(list));
+
+  document.getElementById("msgInput").value = "";
+  loadMessages();
+  addBarrage(`${name} 寄思清明`);
+}
+
+// 加载寄语
+function loadMessages() {
+  const list = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+  const wall = document.getElementById("msgWall");
+  wall.innerHTML = "";
+  list.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "message-item";
+    div.innerHTML = `<span class="name">${m.name}</span><span class="time">${m.time}</span><br>${m.text}`;
+    wall.appendChild(div);
+  });
+}
+
+// 分享弹窗
+function showShare() {
+  document.getElementById("shareLink").innerText = window.location.href;
+  document.getElementById("shareModal").style.display = "flex";
+}
+function closeShare(e) {
+  if (e.target === document.getElementById("shareModal"))
+    document.getElementById("shareModal").style.display = "none";
+}
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => alert("链接已复制"));
+}
+
+// 初始化
+window.onload = () => {
+  makeRain();
+  makePetals();
+  changeQuote();
+  loadMessages();
+};
+</script>
+</body>
+</html>
