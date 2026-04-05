@@ -284,11 +284,8 @@ body {
 }
 /* 点亮蜡烛的提示框 */
 .candle-tip {
-  font-size: 13px;
-  color: #999;
+  font-size: 14px;
+  color: #888;
   text-align: center;
-  margin: 0 auto 16px auto;
-  padding: 0 10px;
-  width: 100%;
-  box-sizing: border-box;
+  margin: 30px auto 0 auto;
 }
