@@ -13,14 +13,6 @@ body {
   color: #333;
 }
 
-/* 点亮蜡烛的提示框 */
-.tip-text {
-  font-size: 13px;
-  color: #999;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
 /* 雨滴 */
 .rain {
   position: fixed;
